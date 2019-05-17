@@ -1,11 +1,13 @@
-const express = require('express')
-const {check, validationResult} = require('express-validator/check')
-const gravatar = require('gravatar')
-const bcrypt = require('bcryptjs')
+const express = require('express');
+const { check, validationResult } = require('express-validator/check');
+const gravatar = require('gravatar');
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+const config = require('config');
 
-const router = new express.Router()
+const router = new express.Router();
 
-const User = require('../models/User')
+const User = require('../models/User');
 
 /* 
 *  @route   POST  api/register
@@ -13,49 +15,63 @@ const User = require('../models/User')
 *  @access  Public
 */
 
-router.post('/', [
-        check('name', 'Name is required').exists(),
-        check('email').isEmail(),
-        check('password', 'Please enter a password with 6 or more characters').isLength({ min: 6})
-    ], async (req, res)=> { 
-        const errors = validationResult(req)
-        if(errors.length > 0){
-            return res.status(400).json({ errors: errors.array()})
-        }
-        
-        const { name, email, password } = req.body;
+router.post(
+	'/',
+	[
+		check('name', 'Name is required').exists(),
+		check('email').isEmail(),
+		check('password', 'Please enter a password with 6 or more characters').isLength({ min: 6 })
+	],
+	async (req, res) => {
+		const errors = validationResult(req);
+		if (errors.length > 0) {
+			return res.status(400).json({ errors: errors.array() });
+		}
 
-        try{
-            let user = await User.findOne({ email })
+		const { name, email, password } = req.body;
 
-            if(user){
-                res.status(400).send({errors: [ {"msg": "User already exists"} ]})
-            }
+		try {
+			let user = await User.findOne({ email });
 
-            const avatar = gravatar.url( email, {
-                s: '200',
-                r: 'pg',
-                d: 'mm'
-            })
+			if (user) {
+				res.status(400).send({ errors: [ { msg: 'User already exists' } ] });
+			}
 
-            user = new User({
-                name,
-                email,
-                avatar,
-                password
-            })
+			const avatar = gravatar.url(email, {
+				s: '200',
+				r: 'pg',
+				d: 'mm'
+			});
 
-            const salt = await bcrypt.genSalt(10)
-            user.password = await bcrypt.hash(password, salt)
+			user = new User({
+				name,
+				email,
+				avatar,
+				password
+			});
 
-            await user.save()
+			const salt = await bcrypt.genSalt(10);
+			user.password = await bcrypt.hash(password, salt);
 
-            res.status(200).send()
-        }catch(e){
-            console.error(e.message)
-            res.status(500).send('Server error')
-        }
+			await user.save();
 
-})
+			const payload = {
+				user: {
+					id: user.id
+				}
+			};
 
-module.exports = router 
+			jwt.sign(payload, config.get('jwtSecret'), { expiresIn: 36000 }, (err, token) => {
+				if (err) {
+					throw err;
+				}
+				res.json({ token });
+			});
+		} catch (e) {
+			console.error(e.message);
+			res.status(500).send('Server error');
+		}
+	}
+);
+
+module.exports = router;
