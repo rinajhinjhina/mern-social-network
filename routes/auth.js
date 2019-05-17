@@ -3,7 +3,7 @@ const express = require('express')
 const router = new express.Router()
 
 /* 
-*  @route   POST  api/register
+*  @route   POST api/login
 *  @desc    Test route 
 *  @access  Public
 */

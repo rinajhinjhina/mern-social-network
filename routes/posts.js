@@ -3,11 +3,11 @@ const express = require('express')
 const router = new express.Router()
 
 /* 
-*  @route   POST  api/register
+*  @route   GET api/posts
 *  @desc    Test route 
 *  @access  Public
 */
-router.post('/', (req, res)=> {
+router.get('/', (req, res)=> {
 
     res.send('Hello from the other side')
 })

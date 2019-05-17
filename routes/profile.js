@@ -3,12 +3,12 @@ const express = require('express')
 const router = new express.Router()
 
 /* 
-*  @route   POST  api/register
+*  @route   GET api/profile
 *  @desc    Test route 
 *  @access  Public
 */
-router.post('/', (req, res)=> {
-
+router.get('/profile', (req, res)=> {
+    console.log(req)
     res.send('Hello from the other side')
 })
 
