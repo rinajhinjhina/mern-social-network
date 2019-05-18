@@ -19,12 +19,12 @@ router.post(
 	'/',
 	[
 		check('name', 'Name is required').exists(),
-		check('email').isEmail(),
+		check('email', 'Please enter a valid email').isEmail(),
 		check('password', 'Please enter a password with 6 or more characters').isLength({ min: 6 })
 	],
 	async (req, res) => {
-		const errors = validationResult(req);
-		if (errors.length > 0) {
+		const errors = validationResult(req)
+		if (!errors.isEmpty) {
 			return res.status(400).json({ errors: errors.array() });
 		}
 
