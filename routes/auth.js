@@ -1,4 +1,6 @@
 const express = require('express')
+const auth = require('../middleware/auth')
+const User  = require('../models/User')
 
 const router = new express.Router()
 
@@ -7,9 +9,14 @@ const router = new express.Router()
 *  @desc    Test route 
 *  @access  Public
 */
-router.post('/', (req, res)=> {
-
-    res.send('Hello from the other side')
+router.get('/', auth, async (req, res)=> {
+    try{
+        const user = await User.findById(req.user.id).select('-password')
+        res.json(user)
+    }catch(e){
+        console.error(e.message)
+        res.status(500).send('Server error')
+    }
 })
 
 module.exports = router 
