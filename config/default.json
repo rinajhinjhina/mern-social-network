@@ -1,4 +1,6 @@
 {
     "MongoURI":"mongodb+srv://root:%7Dwby54%22hQ@login-app-x3xmf.mongodb.net/test?retryWrites=true",
-    "jwtSecret":"Silencio is a villainsio"
+    "jwtSecret":"Silencio is a villainsio",
+    "githubClientId":"5d8cd8ac43ed5155907",
+    "githubClientSecret":"3b6847316567d2569913324ddeed465aaf16c328"
 }
