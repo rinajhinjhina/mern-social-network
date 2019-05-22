@@ -1,7 +1,10 @@
+/* eslint react/no-typos: 0 */
+
 import React, { Fragment, useState } from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { setAlert } from '../../actions/alert'
+import PropTypes from 'prop-types'
 
 const Register = (props) => {
 	const [formData, setFormData] = useState({
@@ -82,6 +85,10 @@ const Register = (props) => {
       </p>
 		</Fragment>
 	)
+}
+
+Register.PropTypes = {
+	setAlert: PropTypes.func.isRequired
 }
 
 export default connect(null, {setAlert})(Register)
