@@ -34,7 +34,7 @@ router.get('/me', auth, async (req, res) => {
 */
 router.post(
 	'/',
-	[auth, [check('status', 'Status is required').exists(), check('skills', 'Skills is required').exists()]],
+	[auth, [check('status', 'Status is required').not().isEmpty(), check('skills', 'Skills is required').not().isEmpty()]],
 	async (req, res) => {
 		try {
 			const errors = validationResult(req)
@@ -138,9 +138,9 @@ router.post(
 	[
 		auth,
 		[
-			check('title', 'Title is required').exists(),
-			check('company', 'Company is required').exists(),
-			check('from', 'From date is required').exists()
+			check('title', 'Title is required').not().isEmpty(),
+			check('company', 'Company is required').not().isEmpty(),
+			check('from', 'From date is required').not().isEmpty()
 		]
 	],
 	async (req, res) => {
@@ -206,10 +206,10 @@ router.post(
 	[
 		auth,
 		[
-			check('school', 'School is required').exists(),
-			check('degree', 'Degree is required').exists(),
-			check('fieldofstudy', 'Field of study date is required').exists(),
-			check('from', 'From date is required').exists()
+			check('school', 'School is required').not().isEmpty(),
+			check('degree', 'Degree is required').not().isEmpty(),
+			check('fieldofstudy', 'Field of study date is required').not().isEmpty(),
+			check('from', 'From date is required').not().isEmpty()
 		]
 	],
 	async (req, res) => {

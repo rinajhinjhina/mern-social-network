@@ -4,9 +4,10 @@ import React, { Fragment, useState } from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { setAlert } from '../../actions/alert'
-import PropTypes from 'prop-types'
+import { register } from '../../actions/auth'
+import propTypes from 'prop-types'
 
-const Register = props => {
+const Register = ({setAlert, register}) => {
 	const [formData, setFormData] = useState({
 		name: '',
 		email: '',
@@ -21,19 +22,19 @@ const Register = props => {
 	const onSubmit = async e => {
 		e.preventDefault()
 		if (password !== password2) {
-			props.setAlert('Passwords do not match', 'danger')
+			setAlert('Passwords do not match', 'danger')
 		} else {
-			console.log('Success')
+			register({name, email, password})	
 		}
 	}
 
 	return (
 		<Fragment>
-			<h1 class="large text-primary">Sign Up</h1>
-			<p class="lead">
-				<i class="fas fa-user" /> Create Your Account
+			<h1 className="large text-primary">Sign Up</h1>
+			<p className="lead">
+				<i className="fas fa-user" /> Create Your Account
 			</p>
-			<form className="form" onSubmit={e => onSubmit(e)}>
+			<form className="form" noValidate={true} onSubmit={e => onSubmit(e)}>
 				<div className="form-group">
 					<input
 						type="text"
@@ -80,15 +81,16 @@ const Register = props => {
 				</div>
 				<input type="submit" className="btn btn-primary" value="Register" />
 			</form>
-			<p class="my-1">
+			<p className="my-1">
 				Already have an account? <Link to="/register">Sign In</Link>
 			</p>
 		</Fragment>
 	)
 }
 
-Register.PropTypes = {
-	setAlert: PropTypes.func.isRequired
+Register.propTypes = {
+	setAlert: propTypes.func.isRequired,
+	register: propTypes.func.isRequired
 }
 
-export default connect(null, { setAlert })(Register)
+export default connect(null, { setAlert, register })(Register)

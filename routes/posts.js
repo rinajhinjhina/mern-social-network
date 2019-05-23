@@ -12,7 +12,7 @@ const router = new express.Router()
 *  @desc    Create a post 
 *  @access  Private 
 */
-router.post('/', [auth, [check('text', 'Text is required').exists()]], async (req, res) => {
+router.post('/', [auth, [check('text', 'Text is required').not().isEmpty()]], async (req, res) => {
 	const errors = validationResult(req)
 	if (!errors.isEmpty()) {
 		return res.status(400).json({ errors: errors.array() })
@@ -172,7 +172,7 @@ router.put('/unlike/:id', auth, async (req, res) => {
 *  @desc    Comment on a post 
 *  @access  Private 
 */
-router.post('/comment/:id', [auth, [check('text', 'Text is required').exists()]], async (req, res) => {
+router.post('/comment/:id', [auth, [check('text', 'Text is required').not().isEmpty()]], async (req, res) => {
 	const errors = validationResult(req)
 	if (!errors.isEmpty()) {
 		return res.status(400).json({ errors: errors.array() })
