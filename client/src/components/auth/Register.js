@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom'
 import { setAlert } from '../../actions/alert'
 import PropTypes from 'prop-types'
 
-const Register = (props) => {
+const Register = props => {
 	const [formData, setFormData] = useState({
 		name: '',
 		email: '',
@@ -81,8 +81,8 @@ const Register = (props) => {
 				<input type="submit" className="btn btn-primary" value="Register" />
 			</form>
 			<p class="my-1">
-        Already have an account? <Link to="/register">Sign In</Link>
-      </p>
+				Already have an account? <Link to="/register">Sign In</Link>
+			</p>
 		</Fragment>
 	)
 }
@@ -91,4 +91,4 @@ Register.PropTypes = {
 	setAlert: PropTypes.func.isRequired
 }
 
-export default connect(null, {setAlert})(Register)
+export default connect(null, { setAlert })(Register)
