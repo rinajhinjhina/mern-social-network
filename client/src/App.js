@@ -5,11 +5,13 @@ import store from './store'
 import { loadUser } from './actions/auth'
 
 import './App.css'
-import Landing from './components/Landing'
-import Navbar from './components/Navbar'
+import Landing from './components/layout/Landing'
+import Navbar from './components/layout/Navbar'
 import Login from './components/auth/Login'
 import Register from './components/auth/Register'
 import Alert from './components/layout/Alert'
+import PrivateRoute from './components/routing/PrivateRoute'
+import Dashboard from './components/dashboard/Dashboard'
 
 const App = () => {
 	useEffect(() => {
@@ -27,6 +29,7 @@ const App = () => {
 						<Switch>
 							<Route exact path="/register" component={Register} />
 							<Route exact path="/login" component={Login} />
+							<PrivateRoute exact path="/dashboard" component={Dashboard} />
 						</Switch>
 					</section>
 				</Fragment>
