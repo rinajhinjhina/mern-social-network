@@ -1,7 +1,7 @@
 /* eslint react-hooks/exhaustive-deps: "off" */
 import React, { useState, useEffect, Fragment } from 'react'
 import PropTypes from 'prop-types'
-import { Link, withRouter } from 'react-router-dom'
+import { withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { createProfile, getCurrentProfile } from '../../actions/profile'
 
