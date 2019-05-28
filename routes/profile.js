@@ -34,7 +34,17 @@ router.get('/me', auth, async (req, res) => {
 */
 router.post(
 	'/',
-	[auth, [check('status', 'Status is required').not().isEmpty(), check('skills', 'Skills is required').not().isEmpty()]],
+	[
+		auth,
+		[
+			check('status', 'Status is required')
+				.not()
+				.isEmpty(),
+			check('skills', 'Skills is required')
+				.not()
+				.isEmpty()
+		]
+	],
 	async (req, res) => {
 		try {
 			const errors = validationResult(req)
@@ -82,6 +92,24 @@ router.post(
 		}
 	}
 )
+/*
+*  @route   GET api/profile/user
+*  @desc    Get all user profiles
+*  @access  Public
+*/
+router.get('/', async (req, res) => {
+	try {
+		const profiles = await Profile.find().populate('user', ['name', 'avatar'])
+		if (!profiles) {
+			return res.status(400).json({ msg: 'No profiles found' })
+		}
+
+		return res.send(profiles)
+	} catch (e) {
+		console.error(e.message)
+		res.status(500).send('Server error')
+	}
+})
 
 /*
 *  @route   GET api/profile/user/:id
@@ -107,27 +135,6 @@ router.get('/user/:id', async (req, res) => {
 })
 
 /*
-*  @route   DELETE api/profile/user/:id
-*  @desc    Find one profile and remove profile, posts, and user
-*  @access  Public
-*/
-
-router.delete('/user/:id', async (req, res) => {
-	try {
-		await Profile.findOneAndDelete({ user: req.params.id })
-		await User.findOneAndDelete({ _id: req.params.id })
-
-		return res.json({ msg: 'User deleted' })
-	} catch (e) {
-		console.error(e.message)
-		if (e.kind === 'Objectid') {
-			return res.status(400).json({ msg: 'Profile not found' })
-		}
-		res.status(500).send('Server error')
-	}
-})
-
-/*
 *  @route   POST api/profile/experience
 *  @desc    Add profile experience
 *  @access  Private
@@ -138,9 +145,15 @@ router.post(
 	[
 		auth,
 		[
-			check('title', 'Title is required').not().isEmpty(),
-			check('company', 'Company is required').not().isEmpty(),
-			check('from', 'From date is required').not().isEmpty()
+			check('title', 'Title is required')
+				.not()
+				.isEmpty(),
+			check('company', 'Company is required')
+				.not()
+				.isEmpty(),
+			check('from', 'From date is required')
+				.not()
+				.isEmpty()
 		]
 	],
 	async (req, res) => {
@@ -206,10 +219,18 @@ router.post(
 	[
 		auth,
 		[
-			check('school', 'School is required').not().isEmpty(),
-			check('degree', 'Degree is required').not().isEmpty(),
-			check('fieldofstudy', 'Field of study date is required').not().isEmpty(),
-			check('from', 'From date is required').not().isEmpty()
+			check('school', 'School is required')
+				.not()
+				.isEmpty(),
+			check('degree', 'Degree is required')
+				.not()
+				.isEmpty(),
+			check('fieldofstudy', 'Field of study date is required')
+				.not()
+				.isEmpty(),
+			check('from', 'From date is required')
+				.not()
+				.isEmpty()
 		]
 	],
 	async (req, res) => {
@@ -291,6 +312,31 @@ router.get('/github/:username', (req, res) => {
 		})
 	} catch (e) {
 		console.error(e.message)
+		res.status(500).send('Server error')
+	}
+})
+
+/*
+*  @route   DELETE api/profile/user/:id
+*  @desc    Find one profile and remove profile, posts, and user
+*  @access  Public
+*/
+
+router.delete('/user/:id', auth, async (req, res) => {
+	try {
+		if (req.user.id !== req.params.id) {
+			return res.status(401).send()
+		}
+
+		await Profile.findOneAndDelete({ user: req.params.id })
+		await User.findOneAndDelete({ _id: req.params.id })
+
+		return res.json({ msg: 'User deleted' })
+	} catch (e) {
+		console.error(e.message)
+		if (e.kind === 'Objectid') {
+			return res.status(400).json({ msg: 'Profile not found' })
+		}
 		res.status(500).send('Server error')
 	}
 })
