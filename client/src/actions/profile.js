@@ -29,7 +29,6 @@ export const getCurrentProfile = () => async dispatch => {
 export const getAllProfiles = () => async dispatch => {
 	try {
 		const res = await axios.get('/api/profile/')
-		console.log(res.data)
 
 		dispatch({
 			type: CLEAR_PROFILE

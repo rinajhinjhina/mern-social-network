@@ -3,7 +3,7 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import PropTypes from 'prop-types'
 
-const ProfileItem = ({ profile: { user: { _id, name, avatar }, status, company, location, skills } }) => {
+const ProfilesItem = ({ profile: { user: { _id, name, avatar }, status, company, location, skills } }) => {
 	return (
 		<div className="profile bg-light">
 			<img src={avatar} alt="" className="round-img" />
@@ -16,21 +16,21 @@ const ProfileItem = ({ profile: { user: { _id, name, avatar }, status, company, 
 				<Link to={`/profile/${_id}`} className="btn btn-primary">
 					View Profile
 				</Link>
-				<ul>
-					{skills.slice(0, 4).map((skill, index) => (
-						<li className="text" key={index}>
-							<i className="fas fa-check" />
-							{' ' + skill}
-						</li>
-					))}
-				</ul>
 			</div>
+			<ul>
+				{skills.slice(0, 4).map((skill, index) => (
+					<li className="text-primary" key={index}>
+						<i className="fas fa-check" />
+						{' ' + skill}
+					</li>
+				))}
+			</ul>
 		</div>
 	)
 }
 
-ProfileItem.PropTypes = {
+ProfilesItem.PropTypes = {
 	profile: PropTypes.object.isRequired
 }
 
-export default ProfileItem
+export default ProfilesItem
