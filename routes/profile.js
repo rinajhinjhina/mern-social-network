@@ -52,9 +52,25 @@ router.post(
 				return res.status(400).json({ errors: errors.array() })
 			}
 
-			const { company, website, location, bio, status, skills, githubusername, social } = req.body
+			const {
+				company,
+				website,
+				location,
+				bio,
+				status,
+				skills,
+				githubusername,
+				youtube,
+				twitter,
+				facebook,
+				linkedin,
+				instagram
+			} = req.body
 
 			const profileFields = {}
+
+			profileFields.social = {}
+
 			profileFields.user = req.user.id
 			if (company) profileFields.company = company
 			if (website) profileFields.website = website
@@ -63,17 +79,11 @@ router.post(
 			if (status) profileFields.status = status
 			if (githubusername) profileFields.githubusername = githubusername
 			if (skills) profileFields.skills = skills.split(',').map(skill => skill.trim())
-
-			if (social) {
-				const { youtube, twitter, facebook, linkedin, instagram } = social
-
-				profileFields.social = {}
-				if (youtube) profileFields.social.youtube = youtube
-				if (twitter) profileFields.social.twitter = twitter
-				if (facebook) profileFields.social.facebook = facebook
-				if (linkedin) profileFields.social.linkedin = linkedin
-				if (instagram) profileFields.social.instagram = instagram
-			}
+			if (youtube) profileFields.social.youtube = youtube
+			if (twitter) profileFields.social.twitter = twitter
+			if (facebook) profileFields.social.facebook = facebook
+			if (linkedin) profileFields.social.linkedin = linkedin
+			if (instagram) profileFields.social.instagram = instagram
 
 			let profile = await Profile.findOne({ user: req.user.id })
 
@@ -305,7 +315,7 @@ router.get('/github/:username', (req, res) => {
 			if (error) console.error(error)
 
 			if (response.statusCode !== 200) {
-				res.send(404).json({ msg: 'No Github profile found' })
+				return res.status(404).json({ msg: 'No Github profile found' })
 			}
 
 			res.json(JSON.parse(body))
