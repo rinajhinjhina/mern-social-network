@@ -114,3 +114,40 @@ export const unlikePost = id => async dispatch => {
 		})
 	}
 }
+
+export const addComment = (id, formData) => async dispatch => {
+	const config = {
+		headers: {
+			'Content-type': 'application/json'
+		}
+	}
+	try {
+		const response = await axios.post(`/api/posts/comment/${id}`, formData, config)
+
+		dispatch({
+			type: ADD_COMMENT,
+			payload: response.data
+		})
+	} catch (error) {
+		dispatch({
+			type: POST_ERROR,
+			payload: { msg: error.response.statusText, status: error.response.status }
+		})
+	}
+}
+
+export const deleteComment = (id, comment_id) => async dispatch => {
+	try {
+		await axios.delete(`/api/posts/comment/${id}/${comment_id}`)
+
+		dispatch({
+			type: DELETE_COMMENT,
+			payload: comment_id
+		})
+	} catch (error) {
+		dispatch({
+			type: POST_ERROR,
+			payload: { msg: error.response.statusText, status: error.response.status }
+		})
+	}
+}

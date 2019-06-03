@@ -1,5 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
+import { Link } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import Moment from 'react-moment'
 import { deletePost, likePost, unlikePost } from '../../actions/post'
@@ -38,9 +39,9 @@ const PostsItem = ({
 					<i className="fas fa-thumbs-up" />
 					<span>{' ' + likes.length}</span>
 				</button>
-				<a href="post.html" className="btn btn-primary">
+				<Link to={`/post/${_id}`} className="btn btn-primary">
 					Discussion <span className="comment-count">{' ' + comments.length}</span>
-				</a>
+				</Link>
 				{auth.user._id === user && (
 					<button type="button" className="btn btn-danger">
 						<i className="fas fa-times" onClick={e => deletePost(_id)} />

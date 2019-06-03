@@ -19,6 +19,7 @@ import AddEducation from './components/profile-forms/AddEducation'
 import Profiles from './components/profiles/Profiles'
 import Profile from './components/profile/Profile'
 import Posts from './components/posts/Posts'
+import Post from './components/post/Post'
 
 const App = () => {
 	useEffect(() => {
@@ -38,6 +39,7 @@ const App = () => {
 							<Route exact path="/login" component={Login} />
 							<Route exact path="/profiles" component={Profiles} />
 							<Route path="/profile/:id" component={Profile} />
+							<PrivateRoute path="/post/:id" component={Post} />
 							<PrivateRoute exact path="/posts" component={Posts} />
 							<PrivateRoute exact path="/dashboard" component={Dashboard} />
 							<PrivateRoute exact path="/create-profile" component={CreateProfile} />
