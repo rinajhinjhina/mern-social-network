@@ -22,7 +22,11 @@ const CommentItem = ({ post, user, deleteComment }) => {
 								Posted on <Moment format="MM/DD/YYYY">{comment.date}</Moment>
 							</p>
 							{user._id === post.user && (
-								<button type="button" className="btn btn-danger">
+								<button
+									type="button"
+									className="btn btn-danger"
+									onClick={() => deleteComment(post._id, comment._id)}
+								>
 									<i className="fas fa-times" />
 								</button>
 							)}
